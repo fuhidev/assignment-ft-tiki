@@ -1,2 +1,2 @@
-export { default as QuanLyNhomQuyenPage } from './QuanLyNhomQuyenPage';
+export { default as BookPage } from './BookPage';
 export { default as QuanLyTaiKhoanPage } from './QuanLyTaiKhoanPage';

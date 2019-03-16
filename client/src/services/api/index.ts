@@ -10,22 +10,22 @@ headers.append('Content-Type', 'application/json');
 export const odata = {
   get: async (url: string, body?: BodyInit) => {
     const result = await get(url, body);
-    if (result.status === 200) return result.data.value;
+    if (result.status === 200) return result.data.data;
     throw new Error(result.data);
   },
   post: async (url: string, body?: BodyInit) => {
     const result = await post(url, body);
-    if (result.status === 201) return result.data;
+    if (result.status === 201) return result.data.data;
     else throw new Error(result.data);
   },
   put: async (url: string, body?: BodyInit) => {
     const result = await put(url, body);
-    if (result.status === 204) return result.data;
+    if (result.status === 204) return result.data.data;
     else throw new Error(result.data);
   },
   patch: async (url: string, body?: BodyInit) => {
     const result = await patch(url, body);
-    if (result.status === 200) return result.data;
+    if (result.status === 200) return result.data.data;
     else throw new Error(result.data);
   },
   delete: async (url: string) => {
