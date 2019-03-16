@@ -181,10 +181,10 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
             ...item,
             ...row,
           };
-          newData.splice(index, 1, newItem);
+
           let hide = message.loading('Đang cập nhật...', 0);
-          this.props.api.update(item[this.getPrimaryColumn().dataIndex], newItem)
-            .then(r => r && message.success('Cập nhật thành công!') && this.setState({ data: newData, editingKey: '' }))
+          this.props.api.update(this.state.editingKey, newItem)
+            .then(r => r && newData.splice(index, 1, r) && message.success('Cập nhật thành công!') && this.setState({ data: newData, editingKey: '' }))
             .catch(_ => message.error('Cập nhật thất bại!'))
             .finally(() => hide());
 
@@ -251,7 +251,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
       let output: ColumnProps<T> = {
         ...col,
         render: col.render ? (text: any, record: any) =>
-        col.render && col.render(text, record, this.isEditing(record))
+          col.render && col.render(text, record, this.isEditing(record))
           : undefined
       };
       if (col.editable) {

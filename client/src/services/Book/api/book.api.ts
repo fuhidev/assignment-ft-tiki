@@ -12,12 +12,12 @@ export class BookAPI implements IService<Book, string>{
     return odata.get(URL);
   }
   delete(id: string): Promise<boolean> {
-    return odata.delete(URL + `/'${id}'`);
+    return odata.delete(URL + `/${id}`);
   }
   add(model: Book): Promise<Book | null> {
     return odata.post(URL, JSON.stringify(model));
   }
   update(id: string, model: Book): Promise<Book | null> {
-    return odata.patch(URL + `/'${model.id}'`, JSON.stringify(model));
+    return odata.put(URL + `/${id}`, JSON.stringify(model));
   }
 }

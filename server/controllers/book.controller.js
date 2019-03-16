@@ -21,7 +21,7 @@ exports.index = function (req, res) {
 exports.new = function (req, res) {
   var book = new Book();
   book.name = req.body.name;
-  book.id = req.body.id;
+  book.id = req.body.id.trim();
   // save the book and check for errors
   book.save(function (err) {
     // if (err)
@@ -50,7 +50,6 @@ exports.update = function (req, res) {
   Book.findOne({id:req.params.book_id}, function (err, book) {
     if (err)
       res.send(err);
-    book.id = req.body.id;
     book.name = req.body.name;
     // save the book and check for errors
     book.save(function (err) {
@@ -59,7 +58,7 @@ exports.update = function (req, res) {
         .status(400)
         .send(err);
       res
-      .status(204)
+      .status(200)
       .send({
         message: 'Contact Info updated',
         data: book
@@ -69,7 +68,7 @@ exports.update = function (req, res) {
 };
 // Handle delete book
 exports.delete = function (req, res) {
-  Book.remove({
+  Book.deleteOne({
     id: req.params.book_id
   }, function (err, book) {
     if (err)

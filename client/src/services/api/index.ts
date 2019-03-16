@@ -20,7 +20,7 @@ export const odata = {
   },
   put: async (url: string, body?: BodyInit) => {
     const result = await put(url, body);
-    if (result.status === 204) return result.data.data;
+    if (result.status === 200) return result.data.data;
     else throw new Error(result.data);
   },
   patch: async (url: string, body?: BodyInit) => {
@@ -51,7 +51,7 @@ export async function get(url: string, body?: BodyInit) {
   });
 }
 export function put(url: string, body?: BodyInit) {
-  pushAuthorizeToHeader();
+  // pushAuthorizeToHeader();
   return fetch(url, {
     method: 'PUT', body, headers
   });
