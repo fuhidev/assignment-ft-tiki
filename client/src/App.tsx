@@ -1,21 +1,44 @@
 import React, { Component } from 'react';
 import MainLayout from './components/Layout/MainLayout';
 import './App.css';
-import {QuanLyTaiKhoanPage,BookPage} from './pages';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BookListPage, BookPage, LoginPage } from './pages';
+import { Switch as Router, Route, Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { Provider, connect } from 'react-redux';
+import { createStore } from 'redux';
+import { AllModelReducer } from './reducers';
 
-class App extends Component {
+
+type MapToProps={
+  loggingIn: boolean
+}
+
+
+
+type Props = {
+
+} & MapToProps & RouteComponentProps;
+
+class App extends Component<Props, {}> {
   render() {
     return (
-      <Router>
-      <MainLayout>
-      <Route exact path="/" component={QuanLyTaiKhoanPage} />
-      <Route path="/quan-ly-nhom-quyen" component={BookPage} />
-      <Route path="/quan-ly-tai-khoan" component={QuanLyTaiKhoanPage} />
-      </MainLayout>
-      </Router>
+        <Router>
+          <MainLayout>
+            <Route exact path="/" component={BookListPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/book-manage"
+              render={(props) => {
+                if (this.props.loggingIn)
+                  return <BookPage />
+                else return <Redirect to="/login" />
+              }} />
+          </MainLayout>
+        </Router>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state: AllModelReducer): MapToProps => ({
+  loggingIn: state.main.loggingIn
+});
+
+export default withRouter(connect(mapStateToProps, null)(App));

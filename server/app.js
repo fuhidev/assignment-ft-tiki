@@ -33,7 +33,7 @@ app.use('/books', booksRouter);
 
 
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://readwrite:readwrite@cluster0-vzxiy.mongodb.net/test?retryWrites=true";
+const uri = "mongodb://localhost:27017/local";
 mongoose.connect(uri, { useNewUrlParser: true },error => {
   if(error){
 		console.log("Error " + error);

@@ -77,7 +77,8 @@ type States<T> = {
 
 type Props<T> = {
   columns: Column[],
-  api: IService<T, any>
+  api: IService<T, any>,
+  isNew: boolean
 };
 
 export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
@@ -94,6 +95,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
         editable: m.editable != undefined ? m.editable : false,
         render: m.render
       } as Column));
+      props.isNew && 
     this.columns.push({
       title: '',
       dataIndex: 'operation',
@@ -101,7 +103,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
         const editable = this.isEditing(record);
         return (
           <div>
-            {editable ? (
+            { editable ? (
               <span>
                 <EditableContext.Consumer>
                   {form => (
@@ -268,14 +270,16 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
 
     return (
       <div>
-        <Button
-          disabled={this.state.editingKey !== ''}
-          onClick={this.handleAdd.bind(this)}
-          type="primary"
-          style={{ marginBottom: 16 }}
-        >
-          Thêm mới
+        {this.props.isNew &&
+          <Button
+            disabled={this.state.editingKey !== ''}
+            onClick={this.handleAdd.bind(this)}
+            type="primary"
+            style={{ marginBottom: 16 }}
+          >
+            Thêm mới
     </Button>
+        }
         <Table
           components={components}
           bordered

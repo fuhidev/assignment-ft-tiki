@@ -12,14 +12,14 @@ export class MainComponent extends React.Component {
       title: 'ID',
       dataIndex: 'id',
       width: '40%',
-      editable: true,
+      editable: false,
       isPrimary: true
     },
     {
       title: 'Tên',
       dataIndex: 'name',
       width: '60%',
-      editable: true,
+      editable: false,
     }
     ];
   }
@@ -29,7 +29,7 @@ export class MainComponent extends React.Component {
       <EditableTable<Book>
         columns={this.columns}
         api={this.api}
-        isNew={true}
+        isNew={false}
       />
     );
   }

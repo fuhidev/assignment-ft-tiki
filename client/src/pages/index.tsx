@@ -1,2 +1,3 @@
 export { default as BookPage } from './BookPage';
-export { default as QuanLyTaiKhoanPage } from './QuanLyTaiKhoanPage';
+export { default as BookListPage } from './BookListPage';
+export { default as LoginPage } from './LoginPage';

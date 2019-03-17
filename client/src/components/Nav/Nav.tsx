@@ -19,15 +19,15 @@ export default class NavComponent extends React.Component<Props, {}> {
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">
-            <Link to="/quan-ly-tai-khoan">
+            <Link to="/">
               <Icon type="user" />
-              <span>Quản lý tài khoản</span>
+              <span>Books</span>
             </Link>
           </Menu.Item>
           <Menu.Item key="2">
-          <Link to="/quan-ly-nhom-quyen">
+          <Link to="/book-manage">
             <Icon type="video-camera" />
-            <span>Quản lý nhóm quyền</span>
+            <span>Book Manage</span>
             </Link>
           </Menu.Item>
         </Menu>
