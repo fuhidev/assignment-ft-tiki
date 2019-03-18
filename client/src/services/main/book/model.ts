@@ -10,5 +10,5 @@ export interface Comment {
 }
 
 export interface Photo {
-  data?: String, contentType?: string, date: Date
+  data?: string, contentType?: string, date: Date
 }

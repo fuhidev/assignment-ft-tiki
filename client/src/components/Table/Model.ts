@@ -6,5 +6,6 @@ export interface Column {
   width?: string | number;
   editable?: boolean;
   inputType?: 'string' | 'number' | 'date'|'file',
-  render?:(text:string,record:any,isEditable:boolean)=>JSX.Element
+  render?:(text:string,record:any,isEditable:boolean)=>JSX.Element;
+  required?:boolean;
 };

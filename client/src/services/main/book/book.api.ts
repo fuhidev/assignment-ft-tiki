@@ -1,6 +1,7 @@
 import IService from '../../api/IService';
 import { Book } from './model';
 import { odata, API_URL } from '../../api';
+import fetch from '../../../helpers/fetch';
 
 const URL = API_URL + '/books';
 
@@ -14,11 +15,40 @@ export class BookAPI implements IService<Book, string>{
   delete(id: string): Promise<boolean> {
     return odata.delete(URL + `/${id}`);
   }
-  add(model: Book): Promise<Book | null> {
-    return odata.post(URL, JSON.stringify(model));
+  async add(model: Book): Promise<Book | null> {
+    var formData = new FormData();
+    formData.append('author', model.author + '');
+    formData.append('price', model.price + '');
+    formData.append('sale', model.sale + '');
+    formData.append('title', model.title + '');
+    if ((model as any).file) {
+      formData.append('file', (model as any).file);
+    }
+
+    const result = await fetch(URL, {
+      method: 'POST',
+      body: formData
+    });
+    if (result.status === 201) return result.data.data;
+    else throw new Error(result.data);
   }
-  update(id: string, model: Book): Promise<Book | null> {
+  async update(id: string, model: Book): Promise<Book | null> {
     delete model.photo;
-    return odata.put(URL + `/${id}`, JSON.stringify(model));
+  
+    var formData = new FormData();
+    formData.append('author', model.author + '');
+    formData.append('price', model.price + '');
+    formData.append('sale', model.sale + '');
+    formData.append('title', model.title + '');
+    if ((model as any).file) {
+      formData.append('file', (model as any).file);
+    }
+
+    const result = await fetch(URL + `/${id}`, {
+      method: 'PATCH',
+      body: formData
+    });
+    if (result.status === 200) return result.data.data;
+    else throw new Error(result.data);
   }
 }

@@ -22,15 +22,17 @@ exports.index = function (req, res) {
 // Handle create book actions
 exports.new = function (req, res) {
   var book = new Book();
-  Object.keys(req.body).forEach(f => book[f] = req.body[f]);
+  Object.keys(req.body).forEach(f => {
+    if (req.body[f]) book[f] = req.body[f]
+  });
   if (req.file) {
     book.photo.data = fs.readFileSync(req.file.path).toString('base64');
     book.photo.contentType = 'image/jpeg';
   }
   // save the book and check for errors
   book.save(function (err) {
-    // if (err)
-    //     res.json(err);
+    if (err)
+      res.status(400).json(err);
     res
       .status(201)
       .send({
@@ -95,7 +97,9 @@ exports.viewPhotos = function (req, res) {
 }
 // Handle update book info
 exports.update = function (req, res) {
-  Book.findByIdAndUpdate(req.params.book_id, req.body,{new:true},
+  Book.findByIdAndUpdate(req.params.book_id, req.body, {
+      new: true
+    },
     function (err, book) {
       if (err)
         res.send(err);
@@ -119,7 +123,14 @@ exports.patch = function (req, res) {
     function (err, book) {
       if (err)
         res.send(err);
-      Object.keys(req.body).forEach(key => book[key] = req.body[key]);
+      for (var key in req.body) {
+        if (req.body[key] === 'undefined') {
+          delete req.body[key]
+        }
+      }
+      Object.keys(req.body).forEach(key => {
+        if (req.body[key]) book[key] = req.body[key]
+      });
       if (req.file) {
         book.photo.data = fs.readFileSync(req.file.path).toString('base64');
         book.photo.contentType = 'image/jpeg';

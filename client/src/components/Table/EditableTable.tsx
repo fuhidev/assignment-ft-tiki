@@ -7,6 +7,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Column } from './Model';
 import { ColumnProps } from 'antd/lib/table';
 import IService from '../../services/api/IService';
+import { Book } from '../../services/main/model';
 const KEY_NEW = ' ';
 const FormItem = Form.Item;
 const EditableContext = React.createContext({});
@@ -26,6 +27,7 @@ type EditableCellProps = {
   dataIndex: never,
   title: string,
   record: any[],
+  required:boolean
 };
 
 class EditableCell extends React.Component<EditableCellProps, {}> {
@@ -45,6 +47,7 @@ class EditableCell extends React.Component<EditableCellProps, {}> {
       title,
       inputType,
       record,
+      required,
       ...restProps
     } = this.props;
     return (
@@ -57,7 +60,7 @@ class EditableCell extends React.Component<EditableCellProps, {}> {
                 <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
                     rules: [{
-                      required: true,
+                      required: required,
                       message: `Nhập ${title}!`,
                     }],
                     initialValue: record[dataIndex],
@@ -97,6 +100,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
         dataIndex: m.dataIndex,
         width: m.width,
         editable: m.editable != undefined ? m.editable : false,
+        required: m.required != undefined ? m.required : false,
         render: m.render
       } as Column));
     props.isNew &&
@@ -186,9 +190,16 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
           let newItem = {
             ...item,
             ...row,
-          };
+          }
 
           let hide = message.loading('Updating...', 0);
+          let file = document.getElementById('photos') as HTMLInputElement;
+          if (file.files && file.files.length > 0) {
+            newItem.file = file.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(newItem.file);
+            reader.onload = () => newItem.photos = { data: reader.result, contentType: 'img/jpeg' };
+          }
           this.props.api.update(this.state.editingKey, newItem)
             .then(r => r && newData.splice(index, 1, r) && message.success('Successfully!') && this.setState({ data: newData, editingKey: '' }))
             .catch(_ => message.error('Unsuccessfully!'))
@@ -201,11 +212,17 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
           ...row
         };
         let hide = message.loading('Adding...', 0);
+        let file = document.getElementById('photos') as HTMLInputElement;
+        if (file.files && file.files.length > 0) {
+          newItem.file = file.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(newItem.file);
+          reader.onload = () => newItem.photos = { data: reader.result, contentType: 'img/jpeg' };
+        }
         this.props.api.add(newItem)
           .then(newItem => {
             newItem
-              && newData.push(newItem)
-              && index > -1 && newData.splice(index, 1)
+              && newData.splice(index, 1, newItem)
               && message.success('Successfully!')
               && this.setState({ data: newData, editingKey: '' })
           })
@@ -267,6 +284,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
+          required:col.required
         })
       }
       return output;

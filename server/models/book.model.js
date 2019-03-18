@@ -16,7 +16,8 @@ var schema = mongoose.Schema({
     },
     sale: {
         type: Number,
-        default: 0
+        default: 0,
+        required:false
     },
     comments: [{
         body: String,
