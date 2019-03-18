@@ -123,11 +123,6 @@ exports.patch = function (req, res) {
     function (err, book) {
       if (err)
         res.send(err);
-      for (var key in req.body) {
-        if (req.body[key] === 'undefined') {
-          delete req.body[key]
-        }
-      }
       Object.keys(req.body).forEach(key => {
         if (req.body[key]) book[key] = req.body[key]
       });

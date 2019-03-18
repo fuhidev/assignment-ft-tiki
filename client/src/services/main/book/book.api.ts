@@ -17,10 +17,10 @@ export class BookAPI implements IService<Book, string>{
   }
   async add(model: Book): Promise<Book | null> {
     var formData = new FormData();
-    formData.append('author', model.author + '');
-    formData.append('price', model.price + '');
-    formData.append('sale', model.sale + '');
-    formData.append('title', model.title + '');
+    model.author && formData.append('author', model.author + '');
+    model.price && formData.append('price', model.price + '');
+    model.sale && formData.append('sale', model.sale + '');
+    model.title && formData.append('title', model.title + '');
     if ((model as any).file) {
       formData.append('file', (model as any).file);
     }
@@ -36,10 +36,10 @@ export class BookAPI implements IService<Book, string>{
     delete model.photo;
   
     var formData = new FormData();
-    formData.append('author', model.author + '');
-    formData.append('price', model.price + '');
-    formData.append('sale', model.sale + '');
-    formData.append('title', model.title + '');
+    model.author && formData.append('author', model.author + '');
+    model.price && formData.append('price', model.price + '');
+    model.sale && formData.append('sale', model.sale + '');
+    model.title && formData.append('title', model.title + '');
     if ((model as any).file) {
       formData.append('file', (model as any).file);
     }
