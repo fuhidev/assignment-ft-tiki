@@ -20,14 +20,15 @@ class MainLayout extends React.Component {
     const { collapsed } = this.state;
     return (
       <Layout id="main-layout">
-        <Nav collapsed={collapsed} />
+        {/* <Nav collapsed={collapsed} /> */}
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
-            <Icon
+            {/* <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
-            />
+            /> */}
+            Tiki Book Store
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,

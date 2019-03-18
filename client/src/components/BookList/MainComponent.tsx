@@ -2,35 +2,49 @@ import React from 'react';
 import { EditableTable } from '../Table/EditableTable';
 import { Column } from '../Table/Model';
 import { BookAPI } from '../../services/Book/api/book.api';
-import { Book } from '../../services/Book/models/book.model';
-export class MainComponent extends React.Component {
+import { Book } from '../../services/main/book/model';
+import { List } from 'antd';
+import { CardComponent } from '../Book/Card';
+import { connect } from 'react-redux';
+import { AllModelReducer } from '../../reducers';
+
+type StateToProps = {
+  books: Book[]
+};
+
+type Props = {
+
+} & StateToProps;
+
+class Component extends React.Component<Props, {}> {
   private api = new BookAPI();
   private columns: Column[] = [];
-  constructor() {
-    super({});
-    this.columns = [{
-      title: 'ID',
-      dataIndex: 'id',
-      width: '40%',
-      editable: false,
-      isPrimary: true
-    },
-    {
-      title: 'Tên',
-      dataIndex: 'name',
-      width: '60%',
-      editable: false,
-    }
-    ];
-  }
   render() {
+    const { books } = this.props;
 
     return (
-      <EditableTable<Book>
-        columns={this.columns}
-        api={this.api}
-        isNew={false}
-      />
-    );
+      <List
+        grid={{
+          gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 6,
+        }}
+        dataSource={books}
+        renderItem={(item: Book) => (
+          <List.Item>
+            <CardComponent
+            book={item}
+            />
+          </List.Item>
+          )}
+        />
+      );
+    }
   }
-}
+  
+const mapStateToProps = (state: AllModelReducer): StateToProps => ({
+              books: state.main.books
+          });
+          
+          const MainComponent = connect(mapStateToProps, null)(Component);
+export {
+              MainComponent
+            }

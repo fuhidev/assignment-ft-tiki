@@ -12,12 +12,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
- .login-form {
+
+.login-form {
   max-width: 300px;
 }
- .login-form-forgot {
+
+.login-form-forgot {
   float: right;
 }
+
 .login-form-button {
   width: 100%;
+}
+
+.product-item p {
+  padding: 5px 0 0;
+  color: #777;
+  font-size: 13px;
+  text-align: left;
+  margin: 0;
+}
+
+.product-item .price-sale {
+  font-size: 13px;
+  color: #242424;
+  font-weight: 500;
+  padding: 10px 0 0;
+  text-align: left;
+}
+
+.product-item .price-sale .price-regular {
+  font-size: 11px;
+  color: #a2a2a2;
+  text-decoration: line-through;
+  text-align: left;
+  font-weight: 300;
+}
+
+.product-item .sale-tag-square {
+  color: #FF3B26;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 2px;
 }

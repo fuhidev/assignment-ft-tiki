@@ -1,8 +1,8 @@
-import { LoadingActionType, AuthActionType, AlertActionType } from './action-types';
+import { LoadingActionType, AuthActionType, AlertActionType, BookActionType } from './action-types';
 import Auth from '../../modules/Auth';
 import { UserResponse } from './user/model';
 import MainAction from './EAction';
-import { Alert } from './model';
+import { Alert, Book } from './model';
 
 export type Model = {
   loading: boolean,
@@ -10,6 +10,7 @@ export type Model = {
   user?: UserResponse,
   isShowLoadingPage: boolean
   alert: Alert,
+  books: Book[]
 };
 
 const loggingIn = Auth.isUserAuthenticated();
@@ -24,11 +25,25 @@ export const defaultState: Model = {
   loggingIn,
   user,
   alert: {},
+  books: []
 };
 
 
 function reducer(state: Model = defaultState, action: MainAction): Model {
   switch (action.type) {
+    case BookActionType.ADD_NEW:
+      return { ...state, books: [action.book, ...state.books] }
+    case BookActionType.REMOVE:
+      var index = state.books.findIndex(f => f._id === action.id);
+      var newBooks = state.books.slice();
+      if (index > -1) {
+        newBooks.splice(index, 1);
+      }
+      return { ...state, books: newBooks }
+    case BookActionType.GET_ALL:
+      return { ...state, books: action.books }
+    case BookActionType.ADD_NEW:
+      return { ...state, books: [action.book, ...state.books] }
     case LoadingActionType.LOAD:
       return { ...state, loading: true };
     case LoadingActionType.ENDLOAD:

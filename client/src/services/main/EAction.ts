@@ -1,5 +1,6 @@
 import { LoadingActionType, AlertActionType } from './action-types';
 import UserEAction from './user/EAction';
+import BookEAction from './book/EAction';
 type MainAction =
   { type: LoadingActionType.LOAD }
   | { type: LoadingActionType.ENDLOAD }
@@ -12,5 +13,6 @@ type MainAction =
   | { type: LoadingActionType.LOADINGPAGE_DISPLAY }
   | { type: LoadingActionType.LOADINGPAGE_HIDE }
   | UserEAction
+  | BookEAction
 
 export default MainAction;

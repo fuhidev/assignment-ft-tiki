@@ -19,3 +19,9 @@ export enum AlertActionType {
   INFO = 'ALERT_INFO',
   CLEAR = 'ALERT_CLEAR'
 };
+
+export enum BookActionType {
+  ADD_NEW = 'ADD_NEW',
+  REMOVE = 'REMOVE',
+  GET_ALL = 'GET_ALL',
+}
