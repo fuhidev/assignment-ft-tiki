@@ -10,13 +10,11 @@ type DiscountMoneyComponentProps = {
 
 class DiscountMoneyComponent extends React.Component<DiscountMoneyComponentProps, {}>{
   render() {
-    return <div className="product-item">
-      <p className="price-sale">
-        <span className="final-price">{formatMoney(this.props.finalPrice)}   </span>
-        <span className="price-regular">{formatMoney(this.props.regularPrice)}</span>
-        <span className="sale-tag sale-tag-square">-{this.props.sale * 100}%</span>
-      </p >
-    </div >;
+    return <p className="price-sale">
+      <span className="final-price">{formatMoney(this.props.finalPrice)}   </span>
+      <span className="price-regular">{formatMoney(this.props.regularPrice)}</span>
+      <span className="sale-tag sale-tag-square">-{this.props.sale * 100}%</span>
+    </p >;
   }
 }
 
@@ -33,19 +31,21 @@ export class CardComponent extends React.Component<Props, {}> {
     );
 
     return (
-      <Tooltip title={book.title}>
-        <Card
-          title={book.title}
-          hoverable
-          style={{ width: 240 }}
-          cover={<img alt={book.title} src={imgSrc as string} />}
-        >
-          <Meta
-            title={this.getMoney(book)}
-            description={book.author}
-          />
-        </Card>
-      </Tooltip>
+      <div className="product-item">
+        <Tooltip title={book.title}>
+          <Card
+            title={book.title}
+            hoverable
+            style={{ width: 240 }}
+            cover={<img alt={book.title} src={imgSrc as string} />}
+          >
+            <Meta
+              title={this.getMoney(book)}
+              description={book.author}
+            />
+          </Card>
+        </Tooltip>
+      </div>
     );
   }
 

@@ -1,7 +1,4 @@
 import React from 'react';
-import { EditableTable } from '../Table/EditableTable';
-import { Column } from '../Table/Model';
-import { BookAPI } from '../../services/Book/api/book.api';
 import { Book } from '../../services/main/book/model';
 import { List } from 'antd';
 import { CardComponent } from '../Book/Card';
@@ -17,8 +14,6 @@ type Props = {
 } & StateToProps;
 
 class Component extends React.Component<Props, {}> {
-  private api = new BookAPI();
-  private columns: Column[] = [];
   render() {
     const { books } = this.props;
 

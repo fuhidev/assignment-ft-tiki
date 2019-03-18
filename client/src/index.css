@@ -13,15 +13,28 @@ code {
     monospace;
 }
 
-.login-form {
-  max-width: 300px;
+.login-container {
+  width: 100%;
+  text-align: center;
 }
 
-.login-form-forgot {
+.login-container .title{
+  color: #595959;
+  font-weight: 700;
+  font-size: 30px;
+  padding: 7px;
+}
+
+.login-container .login-form {
+  max-width: 300px;
+  display: inline-block;
+}
+
+.login-container .login-form-forgot {
   float: right;
 }
 
-.login-form-button {
+.login-container .login-form-button {
   width: 100%;
 }
 
@@ -55,4 +68,24 @@ code {
   font-size: 12px;
   font-weight: 500;
   margin-left: 2px;
+}
+
+.product-item .ant-card-cover {
+  height: 225px;
+}
+
+.product-item img {
+  max-height: 225px;
+  max-width: 238px;
+  height: auto;
+  width: auto;
+  margin: 0 auto;
+}
+
+.product-item .ant-card {
+  height: 400px;
+}
+
+.table-photo{
+  width: 100px;height: auto;
 }

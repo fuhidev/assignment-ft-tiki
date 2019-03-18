@@ -18,6 +18,7 @@ export class BookAPI implements IService<Book, string>{
     return odata.post(URL, JSON.stringify(model));
   }
   update(id: string, model: Book): Promise<Book | null> {
+    delete model.photo;
     return odata.put(URL + `/${id}`, JSON.stringify(model));
   }
 }

@@ -95,7 +95,7 @@ exports.viewPhotos = function (req, res) {
 }
 // Handle update book info
 exports.update = function (req, res) {
-  Book.findByIdAndUpdate(req.params.book_id, req.body,
+  Book.findByIdAndUpdate(req.params.book_id, req.body,{new:true},
     function (err, book) {
       if (err)
         res.send(err);
@@ -141,7 +141,7 @@ exports.patch = function (req, res) {
 };
 // Handle delete book
 exports.delete = function (req, res) {
-  Book.findOneAndDelete(req.params.book_id,
+  Book.findByIdAndDelete(req.params.book_id,
     function (err, book) {
       if (err)
         res.status(400).send(err);

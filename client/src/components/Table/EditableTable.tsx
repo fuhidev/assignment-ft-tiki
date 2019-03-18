@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Table, Input, InputNumber, Popconfirm, Form, message, Button,
+  Table, Input, InputNumber, Popconfirm, Form, message, Button, Upload
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -21,7 +21,7 @@ const EditableRow = ({ form, ...props }
 const EditableFormRow = Form.create()(EditableRow);
 
 type EditableCellProps = {
-  inputType: 'string' | 'number',
+  inputType: 'string' | 'number' | 'file',
   editing: boolean,
   dataIndex: never,
   title: string,
@@ -33,7 +33,9 @@ class EditableCell extends React.Component<EditableCellProps, {}> {
     if (this.props.inputType === 'number') {
       return <InputNumber />;
     }
-    return <Input />;
+    else if (this.props.inputType === 'file') {
+      return <Input type="file" multiple={false} />
+    } return <Input />;
   };
 
   render() {
@@ -88,53 +90,55 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
     this.state = { data: [], editingKey: '' };
     this.columns = props.columns.map(m =>
       ({
+        hidden: m.hidden !== undefined ? m.hidden : false,
         isPrimary: m.isPrimary != undefined ? m.isPrimary : false,
+        inputType: m.inputType,
         title: m.title,
         dataIndex: m.dataIndex,
         width: m.width,
         editable: m.editable != undefined ? m.editable : false,
         render: m.render
       } as Column));
-      props.isNew && 
-    this.columns.push({
-      title: '',
-      dataIndex: 'operation',
-      render: (text: any, record: any) => {
-        const editable = this.isEditing(record);
-        return (
-          <div>
-            { editable ? (
-              <span>
-                <EditableContext.Consumer>
-                  {form => (
-                    <a
-                      href="javascript:;"
-                      onClick={() => this.save(form, record[this.getPrimaryColumn().dataIndex])}
-                      style={{ marginRight: 8 }}
-                    >
-                      Lưu
+    props.isNew &&
+      this.columns.push({
+        title: '',
+        dataIndex: 'operation',
+        render: (text: any, record: any) => {
+          const editable = this.isEditing(record);
+          return (
+            <div>
+              {editable ? (
+                <span>
+                  <EditableContext.Consumer>
+                    {form => (
+                      <a
+                        href="javascript:;"
+                        onClick={() => this.save(form, record[this.getPrimaryColumn().dataIndex])}
+                        style={{ marginRight: 8 }}
+                      >
+                        Save
                       </a>
-                  )}
-                </EditableContext.Consumer>
-                <Popconfirm
-                  title="Chắc chắn muốn hủy?"
-                  onConfirm={() => this.cancel()}
-                >
-                  <a>Hủy</a>
-                </Popconfirm>
-              </span>
-            ) : (
-                <div>
-                  <a onClick={() => this.edit(record[this.getPrimaryColumn().dataIndex])}>Chỉnh sửa</a> |
-                    <Popconfirm title="Chắc chắn muốn xóa?" onConfirm={() => this.delete(record[this.getPrimaryColumn().dataIndex])}>
-                    <a href="javascript:;">Xóa</a>
+                    )}
+                  </EditableContext.Consumer>
+                  <Popconfirm
+                    title="Are you sure?"
+                    onConfirm={() => this.cancel()}
+                  >
+                    <a>Cancel</a>
                   </Popconfirm>
-                </div>
-              )}
-          </div>
-        );
-      },
-    })
+                </span>
+              ) : (
+                  <div>
+                    <a onClick={() => this.edit(record[this.getPrimaryColumn().dataIndex])}>Edit</a> |
+                    <Popconfirm title="Are you sure?" onConfirm={() => this.delete(record[this.getPrimaryColumn().dataIndex])}>
+                      <a href="javascript:;">Delete</a>
+                    </Popconfirm>
+                  </div>
+                )}
+            </div>
+          );
+        },
+      })
   }
 
   async componentDidMount() {
@@ -184,10 +188,10 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
             ...row,
           };
 
-          let hide = message.loading('Đang cập nhật...', 0);
+          let hide = message.loading('Updating...', 0);
           this.props.api.update(this.state.editingKey, newItem)
-            .then(r => r && newData.splice(index, 1, r) && message.success('Cập nhật thành công!') && this.setState({ data: newData, editingKey: '' }))
-            .catch(_ => message.error('Cập nhật thất bại!'))
+            .then(r => r && newData.splice(index, 1, r) && message.success('Successfully!') && this.setState({ data: newData, editingKey: '' }))
+            .catch(_ => message.error('Unsuccessfully!'))
             .finally(() => hide());
 
         }
@@ -196,16 +200,16 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
         let newItem = {
           ...row
         };
-        let hide = message.loading('Đang thêm mới...', 0);
+        let hide = message.loading('Adding...', 0);
         this.props.api.add(newItem)
           .then(newItem => {
             newItem
               && newData.push(newItem)
               && index > -1 && newData.splice(index, 1)
-              && message.success('Thêm mới thành công!')
+              && message.success('Successfully!')
               && this.setState({ data: newData, editingKey: '' })
           })
-          .catch(_ => message.error('Thêm mới thất bại!'))
+          .catch(_ => message.error('Unsuccessfully!'))
           .finally(() => hide());
 
         this.setState({ data: newData, editingKey: '' });
@@ -225,10 +229,10 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
     if (index > -1) {
       const item = newData[index] as any;
       newData.splice(index, 1);
-      let hide = message.loading('Đang xóa...', 0);
+      let hide = message.loading('Deleting...', 0);
       this.props.api.delete(item[this.getPrimaryColumn().dataIndex])
-        .then(r => r && message.success('Xóa thành công!') && this.setState({ data: newData, editingKey: '' }))
-        .catch(_ => message.error('Xóa thất bại!'))
+        .then(r => r && message.success('Successfully!') && this.setState({ data: newData, editingKey: '' }))
+        .catch(_ => message.error('Unsuccessfully!'))
         .finally(() => hide());
 
     }
@@ -249,7 +253,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
       },
     };
 
-    const columns = this.columns.map((col) => {
+    const columns = this.columns.filter(f => f.hidden !== true).map((col) => {
       let output: ColumnProps<T> = {
         ...col,
         render: col.render ? (text: any, record: any) =>
@@ -277,7 +281,7 @@ export class EditableTable<T> extends React.Component<Props<T>, States<T>> {
             type="primary"
             style={{ marginBottom: 16 }}
           >
-            Thêm mới
+            Add
     </Button>
         }
         <Table

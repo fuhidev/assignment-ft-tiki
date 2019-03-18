@@ -23,11 +23,11 @@ class MainLayout extends React.Component {
         {/* <Nav collapsed={collapsed} /> */}
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
-            {/* <Icon
+            <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
-            /> */}
+            />
             Tiki Book Store
           </Header>
           <Content style={{
