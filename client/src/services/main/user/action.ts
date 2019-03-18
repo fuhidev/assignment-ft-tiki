@@ -11,7 +11,7 @@ export const login = (username: string, password: string) => {
     dispatch(loading.loadingReady());
     authService.login(username, password)
       .then(user => {
-        Auth.authenticateUser(user);
+        // Auth.authenticateUser(user);
         dispatch(success(user));
         dispatch(push('/book-manage'));
         dispatch(loading.loadingFinish());
@@ -31,8 +31,9 @@ export const logout = () =>
   (dispatch: Function) => {
     dispatch({ type: AuthActionType.LOGOUT });
     dispatch(loading.loadingPage(true));
-    Auth.deauthenticateUser();
+    // Auth.deauthenticateUser();
     dispatch(alertActions.success('Đăng xuất thành công'));
-    dispatch(loading.loadingPage(false));
-    // location.href = '/login';
+    // dispatch(push('/'));
+    // dispatch(loading.loadingPage(false));
+    location.href = '/';
   };

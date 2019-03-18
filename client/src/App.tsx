@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MainLayout from './components/Layout/MainLayout';
 import './App.css';
-import { BookListPage, BookPage, LoginPage } from './pages';
+import { BookListPage, BookPage, LoginPage ,LogoutFunction} from './pages';
 import { Switch as Router, Route, Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
@@ -25,6 +25,7 @@ class App extends Component<Props, {}> {
           <MainLayout>
             <Route exact path="/" component={BookListPage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/logout" component={LogoutFunction} />
             <Route path="/book-manage"
               render={(props) => {
                 if (this.props.loggingIn)
